@@ -1,1 +1,41 @@
+# Binaries for programs
+bin/
+*.exe
+*.exe~
+*.dll
+*.so
+*.so.*
+*.dylib
+
+# Test binaries
+*.test
+*.out
+
+# Golang build artifacts
+vendor/
+dist/
+build/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+.DS_Store
 .serena
+.claude
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+
+# Go test coverage
+*.prof
+
+# Logs
+*.log
+
+# Temporary files
+*.tmp

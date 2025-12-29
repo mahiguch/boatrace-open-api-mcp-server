@@ -80,29 +80,94 @@ Returns pre-race analysis and information including:
 
 ### Claude Code
 
-To use this MCP server with Claude Code:
+#### Quick Installation with `claude mcp add`
 
-1. **Build the server**:
+The fastest way to install this MCP server in Claude Code:
+
+1. **Build the server first**:
    ```bash
+   cd /path/to/boatrace-open-api-mcp-server
    make build
    ```
 
-2. **Configure Claude Code** - Add to your `claude_code.json` or MCP configuration:
-   ```json
-   {
-     "mcpServers": {
-       "boatrace": {
-         "command": "/path/to/boatrace-open-api-mcp-server/bin/boatrace-mcp",
-         "args": []
-       }
-     }
-   }
+2. **Add to Claude Code using `claude mcp add` command**:
+
+   For **local development** (project scope):
+   ```bash
+   claude mcp add --scope project --transport stdio boatrace-api -- \
+     /path/to/boatrace-open-api-mcp-server/bin/boatrace-mcp
    ```
 
-3. **Use in Claude Code** - The tools will be automatically available:
+   For **user-wide installation** (all projects):
+   ```bash
+   claude mcp add --scope user --transport stdio boatrace-api -- \
+     /path/to/boatrace-open-api-mcp-server/bin/boatrace-mcp
+   ```
+
+3. **Verify installation**:
+   ```bash
+   # List all installed MCP servers
+   claude mcp list
+
+   # Get details about boatrace-api server
+   claude mcp get boatrace-api
+   ```
+
+4. **Use in Claude Code**:
+   The tools will be automatically available:
    - `programs(year="2025", date="20251222")` - Get race programs
    - `results(year="2025", date="20251220")` - Get race results
    - `previews(year="2025", date="20251222")` - Get race previews
+
+#### Manual Configuration (Alternative)
+
+If you prefer manual configuration, add to `.mcp.json` in your project:
+
+```json
+{
+  "mcpServers": {
+    "boatrace-api": {
+      "type": "stdio",
+      "command": "/path/to/boatrace-open-api-mcp-server/bin/boatrace-mcp"
+    }
+  }
+}
+```
+
+Or add to `~/.claude.json` for user-wide configuration:
+
+```json
+{
+  "mcpServers": {
+    "boatrace-api": {
+      "type": "stdio",
+      "command": "/path/to/boatrace-open-api-mcp-server/bin/boatrace-mcp"
+    }
+  }
+}
+```
+
+#### Troubleshooting
+
+**Server not appearing in Claude Code?**
+
+1. Check installation:
+   ```bash
+   claude mcp list
+   ```
+
+2. Verify binary exists and is executable:
+   ```bash
+   ls -la /path/to/boatrace-open-api-mcp-server/bin/boatrace-mcp
+   chmod +x /path/to/boatrace-open-api-mcp-server/bin/boatrace-mcp
+   ```
+
+3. Test binary directly:
+   ```bash
+   /path/to/boatrace-open-api-mcp-server/bin/boatrace-mcp
+   ```
+
+4. Reload Claude Code or run `/mcp` command to refresh MCP server list
 
 ### GitHub Copilot
 
